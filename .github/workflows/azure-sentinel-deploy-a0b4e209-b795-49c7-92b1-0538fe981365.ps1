@@ -331,7 +331,7 @@ function DoesContainWorkspaceParam($templateObject) {
 }
 
 function AttemptDeployment($path, $parameterFile, $deploymentName, $templateObject) {
-    Write-Host "[Info] Deploying $path with deployment name $deploymentName"
+    Write-Host "[Info] Deploying $path with $parameterFile and deployment name $deploymentName"
 
     $isValid = IsValidTemplate $path $templateObject
     if (-not $isValid) {
