@@ -103,10 +103,12 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "workspaceName": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": ""
     },
     "apiName": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": ""
     }
   }
 }
