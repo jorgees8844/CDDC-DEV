@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "workspaceName": {
-            "value": "cdc-logana002-monitoring-dev"
+            "value": "jorgeestesting"
         },
         "apiName": {
             "value": "Microsoft.SecurityInsights"
