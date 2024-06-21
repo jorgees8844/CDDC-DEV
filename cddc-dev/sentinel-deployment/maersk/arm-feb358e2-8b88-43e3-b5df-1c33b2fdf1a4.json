@@ -1,14 +1,4 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "workspaceName": {
-      "type": "string"
-    },
-    "apiName": {
-      "type": "string"
-    }
-  },
   "resources": [
     {
       "name": "[concat(parameters('workspaceName'), '/', parameters('apiName'), '/', 'feb358e2-8b88-43e3-b5df-1c33b2fdf1a4')]",
@@ -108,5 +98,15 @@
       },
       "apiVersion": "2023-02-01-preview"
     }
-  ]
+  ],
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "workspaceName": {
+      "type": "string"
+    },
+    "apiName": {
+      "type": "string"
+    }
+  }
 }
