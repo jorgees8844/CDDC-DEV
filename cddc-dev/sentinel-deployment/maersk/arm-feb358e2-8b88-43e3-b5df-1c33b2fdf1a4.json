@@ -1,0 +1,112 @@
+{
+  "resources": [
+    {
+      "name": "[concat(parameters('workspaceName'), '/', parameters('apiName'), '/', 'feb358e2-8b88-43e3-b5df-1c33b2fdf1a4')]",
+      "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+      "kind": "Scheduled",
+      "properties": {
+        "queryFrequency": "PT1H",
+        "queryPeriod": "PT1H",
+        "triggerOperator": "GreaterThan",
+        "triggerThreshold": 0,
+        "eventGroupingSettings": {
+          "aggregationKind": "AlertPerResult"
+        },
+        "severity": "Medium",
+        "query": "// https://help.deepsecurity.trendmicro.com/11_0/aws/Events-Alerts/syslog-parsing.html\n// Anti-Malware events. Currently, only these signature IDs are used: 4,000,000-4,999,999\t\nCommonSecurityLog\n| where DeviceVendor == \"Trend Micro\" and Computer == \"Workload\"\n| where FilePath !contains \"QualysAEP_setup.exe\"\n| where DeviceAction <> \"Quarantine\" //added at request of SOC 15/9/23\n| where tolong(DeviceEventClassID) <= 4999999 and tolong(DeviceEventClassID) >= 4000000\n// Have removed the summarize as I'd rather give the SOC team all info and let them decide what's relevant.\n| summarize by DeviceName, FilePath, DeviceAction, Activity, DeviceCustomString3\n",
+        "suppressionDuration": "PT5H",
+        "suppressionEnabled": false,
+        "incidentConfiguration": {
+          "createIncident": true,
+          "groupingConfiguration": {
+            "enabled": true,
+            "reopenClosedIncident": false,
+            "lookbackDuration": "PT5H",
+            "matchingMethod": "Selected",
+            "groupByEntities": [
+              "Host"
+            ],
+            "groupByAlertDetails": [],
+            "groupByCustomDetails": []
+          }
+        },
+        "customDetails": {},
+        "entityMappings": [
+          {
+            "entityType": "Host",
+            "fieldMappings": [
+              {
+                "identifier": "HostName",
+                "columnName": "DeviceName"
+              }
+            ]
+          },
+          {
+            "entityType": "Malware",
+            "fieldMappings": [
+              {
+                "identifier": "Name",
+                "columnName": "Activity"
+              }
+            ]
+          },
+          {
+            "entityType": "File",
+            "fieldMappings": [
+              {
+                "identifier": "Name",
+                "columnName": "FilePath"
+              }
+            ]
+          },
+          {
+            "entityType": "File",
+            "fieldMappings": [
+              {
+                "identifier": "Name",
+                "columnName": "DeviceCustomString3"
+              }
+            ]
+          }
+        ],
+        "alertDetailsOverride": {
+          "alertDisplayNameFormat": null,
+          "alertDescriptionFormat": null,
+          "alertTacticsColumnName": null,
+          "alertSeverityColumnName": null
+        },
+        "tactics": [
+          "Execution",
+          "Persistence",
+          "PrivilegeEscalation",
+          "DefenseEvasion",
+          "LateralMovement"
+        ],
+        "techniques": [
+          "T1053",
+          "T1204",
+          "T1176",
+          "T1554",
+          "T1574",
+          "T1505",
+          "T0889"
+        ],
+        "displayName": "Trend Micro Cloud One - Malware Detected test 2",
+        "enabled": true,
+        "description": "The identification of malware detection\n\nSummarize edit made for SOC on 22 Aug 23 - CS",
+        "alertRuleTemplateName": null
+      },
+      "apiVersion": "2023-02-01-preview"
+    }
+  ],
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "workspaceName": {
+      "type": "string"
+    },
+    "apiName": {
+      "type": "string"
+    }
+  }
+}
